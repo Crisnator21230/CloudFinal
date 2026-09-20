@@ -1,0 +1,4 @@
+.git
+.gitignore
+react/node_modules
+react/dist
