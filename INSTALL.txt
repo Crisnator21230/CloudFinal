@@ -1,0 +1,2 @@
+React: copy NatorLanding.tsx and the Nator styles into a React project with lucide-react.
+Static: serve static/index.html and static/styles.css from the same folder.
