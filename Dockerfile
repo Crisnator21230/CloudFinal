@@ -1,13 +1,34 @@
+# ==========================================
+# BUILD DE REACT
+# ==========================================
+
+FROM node:20-alpine AS build
+
+WORKDIR /app
+
+# Dependencias
+COPY react/package.json .
+COPY react/package-lock.json .
+
+RUN npm ci
+
+# Aplicación React
+COPY react/ .
+
+# Build de producción
+RUN npm run build
+
+
+# ==========================================
+# NGINX
+# ==========================================
+
 FROM nginx:alpine
 
-# Copiar la landing estática
-COPY static/ /usr/share/nginx/html/
-
-# Configuración de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Puerto utilizado por Cloud Run
+COPY --from=build /app/dist /usr/share/nginx/html
+
 EXPOSE 8080
 
-# Ejecutar Nginx en foreground
 CMD ["nginx", "-g", "daemon off;"]
